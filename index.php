@@ -48,6 +48,8 @@
             </table>
         </div>
     </div>
+    
+    <?php include_once('templates/footer.php') ?>
 
     <div id="modal_container">
     </div>
