@@ -42,6 +42,29 @@ window.onload = function () {
     loadClassroomInfo('B3212');
     loadClassroomInfo('B3214');
     loadClassroomInfo('B3216');
+
+    window.setInterval(function(){
+        //load classroom info rows when no modals are opened
+
+        modal_opened = false
+        var nodes = document.getElementById('modal_container').childNodes
+        for(i=0; i<nodes.length; i+=1) {
+            if(nodes[i].className === 'modal fade in') {
+                modal_opened = true
+            }
+        }
+
+        if (!modal_opened) {
+            document.getElementById('modal_container').innerHTML = ''
+            loadClassroomInfo('B3206');
+            loadClassroomInfo('B3208');
+            loadClassroomInfo('B3210');
+            loadClassroomInfo('B3212');
+            loadClassroomInfo('B3214');
+            loadClassroomInfo('B3216');
+        }
+
+    }, 5000);
     
 }
 
