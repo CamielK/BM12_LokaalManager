@@ -45,7 +45,44 @@ class movement {
     return json_encode($response);
   	
   }
+    
+  public function getLastMovement($classroom) {
+  	
+    //database connection
+    include_once('dbConnection.php');
+    $db = new databaseConnection();
+    
+    //escape request input to prevent SQL injections
+    $classroom = mysqli_real_escape_string($db->getConnection(), $classroom);
+    
+    //insert new row into movement table
+    $query = "
+          SELECT Beweging.tijd, Lokaal.lokaalnummer
+          FROM `lokaal_manager`.`Beweging`
+          JOIN `lokaal_manager`.`Lokaal` ON Beweging.lokaal_id = Lokaal.id
+          WHERE Lokaal.lokaalnummer LIKE '%".$classroom."%'
+          ORDER BY Beweging.tijd DESC
+          LIMIT 1
+          ;";
+    
+    //execute
+    $result = $db->queryDatabase($query);
 
+    //check result
+    if ($result->num_rows > 0) {
+    	$response['last_movement'] = $result->fetch_assoc();
+    } else {
+        $response['error'] = 'No movement records for room: '.$classroom.'.';
+        $response['last_movement']['tijd'] = '-';
+    }
+    
+    //close connection
+    $db->closeConnection();
+
+    //return result
+    return $response['last_movement']['tijd'];
+  	
+  }
     
 }
 	

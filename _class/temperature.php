@@ -45,6 +45,45 @@ class temperature {
     return json_encode($response);
   	
   }
+  
+  public function getTemperature($classroom) {
+  	
+    //database connection
+    include_once('dbConnection.php');
+    $db = new databaseConnection();
+    
+    //escape request input to prevent SQL injections
+    $classroom = mysqli_real_escape_string($db->getConnection(), $classroom);
+      
+    //insert new row into movement table
+    $query = "
+          SELECT Temperatuur.temp, Lokaal.lokaalnummer
+          FROM `lokaal_manager`.`Temperatuur`
+          JOIN `lokaal_manager`.`Lokaal` ON Temperatuur.lokaal_id = Lokaal.id
+          WHERE Lokaal.lokaalnummer LIKE '%".$classroom."%'
+          AND Temperatuur.tijd > DATE_SUB(NOW(), INTERVAL 2 HOUR)
+          ORDER BY Temperatuur.tijd DESC
+          LIMIT 1
+          ;";
+    
+    //execute
+    $result = $db->queryDatabase($query);
+
+    //check result
+    if ($result->num_rows > 0) {
+    	$response['last_temperature'] = $result->fetch_assoc();
+    } else {
+        $response['error'] = 'No temperature records for room: '.$classroom.'.';
+        $response['last_temperature']['temp'] = '-';
+    }
+    
+    //close connection
+    $db->closeConnection();
+
+    //return result
+    return $response['last_temperature']['temp'];
+  	
+  }
     
 }
 	
