@@ -71,10 +71,6 @@
                 document.getElementById('submit').style.display = 'none';
                 document.getElementById('loadingIcon').style.display = 'block';
             }
-            function hideLoadingIcon() {
-                document.getElementById('submit').style.display = 'block';
-                document.getElementById('loadingIcon').style.display = 'none';
-            }
         </script>
 
     </head>
