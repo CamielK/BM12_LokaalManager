@@ -21,7 +21,7 @@ if (isset($_SESSION['attempts'])) {
 
 //handle submit action
 if (isset($_POST["submit"])) {
-    
+
     //get inputs
     $name = $_POST['name'];
     $password = $_POST['password'];

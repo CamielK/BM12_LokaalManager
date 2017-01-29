@@ -9,7 +9,7 @@
         <?php echo ($_SESSION['user_group'] == 1) ? '<a href="/admin/gebruikers.php">gebruikers beheren</a>' : ""; ?>
     </li>
     <li <?php echo ($page == 'lok') ? "class='active'" : ""; ?> >
-        <?php echo ($_SESSION['user_group'] == 1) ? '<a href="/admin/lokalen.php">lokalen beheren</a>' : ""; ?>
+        <?php echo (($_SESSION['user_group'] == 1) || ($_SESSION['user_group'] == 3) ) ? '<a href="/admin/lokalen.php">lokalen beheren</a>' : ""; ?>
     </li>
     <li>
         <a href="/">Ga naar homepage</a>

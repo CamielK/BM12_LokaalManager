@@ -31,6 +31,8 @@ include('session.php');
                 <div>
                     <h1 class="text-center login-title">Lokalen beheren</h1></br>
 
+
+
                 </div>
             </div>
         </div>

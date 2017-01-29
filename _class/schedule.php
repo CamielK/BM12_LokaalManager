@@ -50,8 +50,52 @@ class schedule {
     return $response;
   	
   }
-    
-    
+
+  function addScheduleRecord($date, $start, $end, $classroom, $info, $username) {
+
+      //database connection
+      include_once('dbConnection.php');
+      $db = new databaseConnection();
+
+      //escape request input to prevent SQL injections
+      $date = mysqli_real_escape_string($db->getConnection(), $date);
+      $start = mysqli_real_escape_string($db->getConnection(), $start);
+      $end = mysqli_real_escape_string($db->getConnection(), $end);
+      $classroom = mysqli_real_escape_string($db->getConnection(), $classroom);
+      $info = mysqli_real_escape_string($db->getConnection(), $info);
+
+      //insert new row into schedule table
+      $query = "
+        INSERT INTO `Lokaalrooster` (`id`, `lokaal_id`, `start_tijd`, `eind_tijd`, `beschrijving`, `user_id`) 
+        VALUES 
+          (NULL, 
+          ( 
+              SELECT id 
+              FROM `lokaal_manager`.`Lokaal` 
+              WHERE Lokaal.lokaalnummer LIKE '%".$classroom."%' 
+          ), 
+          '$date $start', 
+          '$date $end', 
+          '$info', 
+          ( 
+              SELECT id 
+              FROM `lokaal_manager`.`User` 
+              WHERE User.name LIKE '%".$username."%' 
+          )
+          );
+        ";
+
+      //execute
+      $result = $db->queryDatabase($query);
+
+      //check query results
+      if ($result) {
+          return 200; //schedule record added
+      } else {
+          return 404; //error adding schedule record
+      }
+
+  }
 }
 	
 ?>
