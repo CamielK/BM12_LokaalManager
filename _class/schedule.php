@@ -53,9 +53,18 @@ class schedule {
 
   function addScheduleRecord($date, $start, $end, $classroom, $info, $username) {
 
+      //check available classrooms one last time
+      include_once('classroom.php');
+      $class = new classroom();
+      if (!in_array($classroom, $class->getAvailableClassrooms($date, $start, $end))) {
+          error_log("classroom already in use!");
+          return 409;
+      }
+
       //database connection
       include_once('dbConnection.php');
       $db = new databaseConnection();
+
 
       //escape request input to prevent SQL injections
       $date = mysqli_real_escape_string($db->getConnection(), $date);

@@ -43,6 +43,9 @@
                 case 404:
                     $result='<div class="alert alert-danger">Er ging iets fout tijdens het reserveren. probeer het nog eens.</div>';
                     break;
+                case 409:
+                    $result='<div class="alert alert-danger">Het gekozen klaslokaal is niet beschikbaar binnen de gekozen tijd. Kies een ander lokaal of datum/tijd.</div>';
+                    break;
                 case 503:
                     $result='<div class="alert alert-danger">Service unavailable, try again later</div>';
                     break;
@@ -149,6 +152,8 @@
                 </div>
             </div>
         </div>
-        
+
+        <script src="../js/reservering.js"></script>
+
     </body>
 </html>
