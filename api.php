@@ -40,6 +40,20 @@
         //return search output
         echo $result = $temp->addTemperatureRecord($temperature, $class_number);
         
+    } else if ($mainArg==='alarm') {
+
+        //get searchstring parameter
+        $class_number = array_shift($request);
+        $info = array_shift($request);
+        $priority = array_shift($request);
+        $timeout = array_shift($request);
+
+        include_once('/volume1/web/_class/alarm.php');
+        $alarm = new alarm();
+
+        //return search output
+        echo $result = $alarm->addAlarmRecord($class_number, $info, $priority, $timeout);
+
     } else if ($mainArg==='test') {
         $arr = array('A' => 1, 'B' => 2, 'C' => 3, 'Response' => true);
         echo json_encode($arr);

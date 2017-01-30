@@ -91,12 +91,19 @@ if (isset($_POST['classroom_name'])) {
     } else {
         $schedule = 'Geen reserveringen meer vandaag';
     }
-    
-    
+
+
+    //temperature info
     include_once('/volume1/web/_class/temperature.php');
     $temperature = new temperature();
     $last_temperature = $temperature->getTemperature($classroom_name);
-	
+
+
+    //alarm info
+    include_once('/volume1/web/_class/alarm.php');
+    $alarm = new alarm();
+    $alarm = $alarm->getAlarm($classroom_name);
+
 	//form table
 	$rowHtml = "
         <th scope='row'>
@@ -109,7 +116,7 @@ if (isset($_POST['classroom_name'])) {
                )) ."
         </th>
         <td>
-            ".$last_movement."
+            ". ((strpos(json_encode($alarm), 'No alarm') === false) ? ''.$last_movement.'<br><div class="alert alert-danger" style="margin-bottom: 1px;height: 30px;line-height:30px;padding:0px 15px;">Alarm! Sensor in beweging (' . $alarm[0]['omschrijving'] . ')</div>' : $last_movement ) ."
         </td>
         <td>
             ". $schedule ."
